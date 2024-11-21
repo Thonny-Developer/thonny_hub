@@ -230,3 +230,4 @@
 	for index, lumber in pairs(game.Workspace.Lumber:GetChildren()) do
 		lumber.CanCollide = true
 	end
+return Model
