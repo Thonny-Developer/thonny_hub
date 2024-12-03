@@ -1343,22 +1343,22 @@ function ThonnyHubLibrary:CreateWindow(Settings)
 			makefolder(ThonnyHubFolder.."/Key System")
 		end
 
-		if Settings.KeySettings.GrabKeyFromSite then
-			for i, Key in ipairs(Settings.KeySettings.Key) do
-				local Success, Response = pcall(function()
-					Settings.KeySettings.Key[i] = tostring(game:HttpGet(Key):gsub("[\n\r]", " "))
-					Settings.KeySettings.Key[i] = string.gsub(Settings.KeySettings.Key[i], " ", "")
-				end)
-				if not Success then
+		-- if Settings.KeySettings.GrabKeyFromSite then
+		-- 	for i, Key in ipairs(Settings.KeySettings.Key) do
+		-- 		local Success, Response = pcall(function()
+		-- 			Settings.KeySettings.Key[i] = tostring(game:HttpGet(Key):gsub("[\n\r]", " "))
+		-- 			Settings.KeySettings.Key[i] = string.gsub(Settings.KeySettings.Key[i], " ", "")
+		-- 		end)
+		-- 		if not Success then
 					
-					print("ThonnyHub | "..Key.." Error " ..tostring(Response))
+		-- 			print("ThonnyHub | "..Key.." Error " ..tostring(Response))
 					 
-				end
-			end
-		end
+		-- 		end
+		-- 	end
+		-- end
 
 		if not Settings.KeySettings.FileName then
-			Settings.KeySettings.FileName = "No file name specified"
+			Settings.KeySettings.FileName = "THubKey"
 		end
 
 		if isfile and isfile(ThonnyHubFolder.."/Key System".."/"..Settings.KeySettings.FileName..ConfigurationExtension) then
