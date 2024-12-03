@@ -1363,11 +1363,20 @@ function ThonnyHubLibrary:CreateWindow(Settings)
 		end
 
 		if isfile and isfile(ThonnyHubFolder.."/Key System".."/"..Settings.KeySettings.FileName..ConfigurationExtension) then
-			for _, MKey in ipairs(Settings.KeySettings.Key) do
-				if string.find(readfile(ThonnyHubFolder.."/Key System".."/"..Settings.KeySettings.FileName..ConfigurationExtension), MKey) then
-					Passthrough = true
-				end
+			
+			local data = game:HttpGet('https://thonny.pythonanywhere.com/?key='..Settings.KeySettings.FileName..ConfigurationExtension)
+			
+			if data == "True" then
+				Passthrough = true
+			else:
+				print(data)
 			end
+
+			-- for _, MKey in ipairs(Settings.KeySettings.Key) do
+			-- 	if string.find(readfile(ThonnyHubFolder.."/Key System".."/"..Settings.KeySettings.FileName..ConfigurationExtension), MKey) then
+			-- 		Passthrough = true
+			-- 	end
+			-- end
 		end
 
 		if not Passthrough then
@@ -1444,19 +1453,29 @@ function ThonnyHubLibrary:CreateWindow(Settings)
 				if #KeyUI.Main.Input.InputBox.Text == 0 then return end
 				local KeyFound = false
 				local FoundKey = ''
-				for _, MKey in ipairs(Settings.KeySettings.Key) do
-					--if string.find(KeyMain.Input.InputBox.Text, MKey) then
-					--	KeyFound = true
-					--	FoundKey = MKey
-					--end
 
-
-					-- stricter key check
-					if KeyMain.Input.InputBox.Text == MKey then
-						KeyFound = true
-						FoundKey = MKey
-					end
+				local data = game:HttpGet('https://thonny.pythonanywhere.com/?key='..Settings.KeySettings.FileName..ConfigurationExtension)
+				
+				if data == "True" then
+					KeyFound = true
+					FoundKey = KeyMain.Input.InputBox.Text
+				else:
+					print(data)
 				end
+
+				-- for _, MKey in ipairs(Settings.KeySettings.Key) do
+				-- 	--if string.find(KeyMain.Input.InputBox.Text, MKey) then
+				-- 	--	KeyFound = true
+				-- 	--	FoundKey = MKey
+				-- 	--end
+
+
+				-- 	-- stricter key check
+				-- 	if KeyMain.Input.InputBox.Text == MKey then
+				-- 		KeyFound = true
+				-- 		FoundKey = MKey
+				-- 	end
+				-- end
 				if KeyFound then 
 					TweenService:Create(KeyMain, TweenInfo.new(0.6, Enum.EasingStyle.Exponential), {BackgroundTransparency = 1}):Play()
 					TweenService:Create(KeyMain, TweenInfo.new(0.6, Enum.EasingStyle.Exponential), {Size = UDim2.new(0, 467, 0, 175)}):Play()
