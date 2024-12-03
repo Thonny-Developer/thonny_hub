@@ -10,7 +10,7 @@ local InterfaceBuild = 'A1'
 local Release = "Build 1.0.0"
 local ThonnyHubFolder = "ThonnyHub"
 local ConfigurationFolder = ThonnyHubFolder.."/Configurations"
-local ConfigurationExtension = ".rfld"
+local ConfigurationExtension = ".thub"
 
 
 local ThonnyHubLibrary = {
@@ -909,7 +909,7 @@ local function Hide(notify: boolean?)
 		if useMobilePrompt then 
 			ThonnyHubLibrary:Notify({Title = "Interface Hiden", Content = "The interface has been hidden, you can show the interface by clicking 'Show Thonny Hub'", Duration = 7, Image = 4400697855})
 		else
-			ThonnyHubLibrary:Notify({Title = "Interface Hiden", Content = "The interface has been hidden, you can show the interface by pressing [K]", Duration = 7, Image = 4400697855})
+			ThonnyHubLibrary:Notify({Title = "Interface Hiden", Content = "The interface has been hidden, you can show the interface by pressing [RightShift]", Duration = 7, Image = 4400697855})
 		end
 	end
 
@@ -2609,7 +2609,7 @@ function ThonnyHubLibrary:CreateWindow(Settings)
 			UserInputService.InputBegan:Connect(function(input, processed)
 
 				if CheckingForKey then
-					if input.KeyCode ~= Enum.KeyCode.Unknown and input.KeyCode ~= Enum.KeyCode.K then
+					if input.KeyCode ~= Enum.KeyCode.Unknown and input.KeyCode ~= Enum.KeyCode.RightShift then
 						local SplitMessage = string.split(tostring(input.KeyCode), ".")
 						local NewKeyNoEnum = SplitMessage[3]
 						Keybind.KeybindFrame.KeybindBox.Text = tostring(NewKeyNoEnum)
@@ -3167,7 +3167,7 @@ Topbar.Hide.MouseButton1Click:Connect(function()
 end)
 
 UserInputService.InputBegan:Connect(function(input, processed)
-	if (input.KeyCode == Enum.KeyCode.K and not processed) then
+	if (input.KeyCode == Enum.KeyCode.RightShift and not processed) then
 		if Debounce then return end
 		if Hidden then
 			Hidden = false
