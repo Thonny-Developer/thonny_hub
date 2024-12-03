@@ -417,6 +417,7 @@ local ThonnyHub = useStudio and script.Parent:FindFirstChild('ThonnyHub') or gam
 local buildAttempts = 0
 local correctBuild = false
 local warned
+local domain = "https://thonny.pythonanywhere.com"
 
 repeat
 	if ThonnyHub:FindFirstChild('Build') and ThonnyHub.Build.Value == InterfaceBuild then
@@ -1342,8 +1343,6 @@ function ThonnyHubLibrary:CreateWindow(Settings)
 			makefolder(ThonnyHubFolder.."/Key System")
 		end
 
-		if typeof(Settings.KeySettings.Key) == "string" then Settings.KeySettings.Key = {Settings.KeySettings.Key} end
-
 		if Settings.KeySettings.GrabKeyFromSite then
 			for i, Key in ipairs(Settings.KeySettings.Key) do
 				local Success, Response = pcall(function()
@@ -1363,10 +1362,10 @@ function ThonnyHubLibrary:CreateWindow(Settings)
 		end
 
 		if isfile and isfile(ThonnyHubFolder.."/Key System".."/"..Settings.KeySettings.FileName..ConfigurationExtension) then
-			for _, MKey in ipairs(Settings.KeySettings.Key) do
-				if string.find(readfile(ThonnyHubFolder.."/Key System".."/"..Settings.KeySettings.FileName..ConfigurationExtension), MKey) then
-					Passthrough = true
-				end
+			local savedKey = ThonnyHubFolder.."/Key System".."/"..Settings.KeySettings.FileName..ConfigurationExtension
+			local keyData = game:HttpGet(domain..'/?key='..savedKey .. "&rand=" .. tostring(math.random()))
+			if keyData == "True" then
+				Passthrough = true
 			end
 		end
 
@@ -1444,12 +1443,10 @@ function ThonnyHubLibrary:CreateWindow(Settings)
 				if #KeyUI.Main.Input.InputBox.Text == 0 then return end
 				local KeyFound = false
 				local FoundKey = ''
-				local keyData = game:HttpGet('https://thonny.pythonanywhere.com/?key='..KeyMain.Input.InputBox.Text .. "&rand=" .. tostring(math.random()))
-				print(keyData)
-				print(KeyMain.Input.InputBox.Text)
+				local keyData = game:HttpGet(domain..'/?key='..KeyMain.Input.InputBox.Text .. "&rand=" .. tostring(math.random()))
 				if keyData == "True" then
 					KeyFound = true
-					FoundKey = MKey
+					FoundKey = KeyMain.Input.InputBox.Text
 				end
 
 				-- for _, MKey in ipairs(Settings.KeySettings.Key) do
