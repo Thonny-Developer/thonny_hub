@@ -1368,7 +1368,7 @@ function ThonnyHubLibrary:CreateWindow(Settings)
 			
 			if data == "True" then
 				Passthrough = true
-			else:
+			else
 				print(data)
 			end
 
