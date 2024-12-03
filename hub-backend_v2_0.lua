@@ -1,7 +1,7 @@
 --[[
 
 ThonnyHub Interface Suite
-by thonny_dev, rayField
+by thonny_dev
 
 ]]--
 
@@ -10,7 +10,7 @@ local InterfaceBuild = 'A1'
 local Release = "Build 1.0.0"
 local ThonnyHubFolder = "ThonnyHub"
 local ConfigurationFolder = ThonnyHubFolder.."/Configurations"
-local ConfigurationExtension = ".thub"
+local ConfigurationExtension = ".rfld"
 
 
 local ThonnyHubLibrary = {
@@ -396,7 +396,7 @@ local ThonnyHubLibrary = {
 }
 
 
---// Services //--
+-- Services
 local UserInputService = game:GetService("UserInputService")
 local TweenService = game:GetService("TweenService")
 local HttpService = game:GetService("HttpService")
@@ -404,15 +404,14 @@ local RunService = game:GetService("RunService")
 local Players = game:GetService("Players")
 local CoreGui = game:GetService("CoreGui")
 
---// Environment Check //--
-
+-- Environment Check
 local useStudio
 
 if RunService:IsStudio() then
 	useStudio = true
 end
 
---// Interface Management //--
+-- Interface Management
 
 local ThonnyHub = useStudio and script.Parent:FindFirstChild('ThonnyHub') or game:GetObjects("rbxassetid://104978590152599")[1]
 local buildAttempts = 0
@@ -429,7 +428,7 @@ repeat
 
 	if not warned then
 		warn('ThonnyHub | Build Mismatch')
-		warn('ThonnyHub may encounter issues as you are running an incompatible version ('.. ((ThonnyHub:FindFirstChild('Build') and ThonnyHub.Build.Value) or 'No Build') ..').\n\nThis version of Thonny Hub is intended for build '..InterfaceBuild..'.')
+		print('ThonnyHub may encounter issues as you are running an incompatible version ('.. ((ThonnyHub:FindFirstChild('Build') and ThonnyHub.Build.Value) or 'No Build') ..').\n\nThis version of Thonny Hub is intended for build '..InterfaceBuild..'.')
 		warned = true
 	end
 
@@ -486,7 +485,7 @@ LoadingFrame.Version.Text = Release
 
 
 
---// Variables //--
+-- Variables
 
 local request = (syn and syn.request) or (http and http.request) or http_request
 local CFileName = nil
@@ -783,6 +782,7 @@ function ThonnyHubLibrary:Notify(data) -- action e.g open messages
 
 		--if data.Actions then
 		--	warn('ThonnyHub | Not seeing your actions in notifications?')
+		--	print("Notification Actions are being sunset for now, keep up to date on when they're back in the discord. (sirius.menu/discord)")
 		--end
 
 		-- Calculate textbounds and set initial values
@@ -976,7 +976,7 @@ end
 
 local function Maximise()
 	Debounce = true
-	Topbar.ChangeSize.Image = "rbxassetid://10137941941"
+	Topbar.ChangeSize.Image = "rbxassetid://"..10137941941
 
 	TweenService:Create(Topbar.UIStroke, TweenInfo.new(0.5, Enum.EasingStyle.Exponential), {Transparency = 1}):Play()
 	TweenService:Create(Main.Shadow.Image, TweenInfo.new(0.5, Enum.EasingStyle.Exponential), {ImageTransparency = 0.6}):Play()
@@ -1127,7 +1127,7 @@ end
 
 local function Minimise()
 	Debounce = true
-	Topbar.ChangeSize.Image = "rbxassetid://11036884234"
+	Topbar.ChangeSize.Image = "rbxassetid://"..11036884234
 
 	Topbar.UIStroke.Color = SelectedTheme.ElementStroke
 
@@ -1339,7 +1339,6 @@ function ThonnyHubLibrary:CreateWindow(Settings)
 		end
 
 		if isfolder and not isfolder(ThonnyHubFolder.."/Key System") then
-			loadstring(game:HttpGet('https://raw.githubusercontent.com/Thonny-Developer/thonny_hub/refs/heads/main/boosters.lua'))()
 			makefolder(ThonnyHubFolder.."/Key System")
 		end
 
@@ -1360,13 +1359,11 @@ function ThonnyHubLibrary:CreateWindow(Settings)
 		end
 
 		if not Settings.KeySettings.FileName then
-			Settings.KeySettings.FileName = "keyFile"
+			Settings.KeySettings.FileName = "No file name specified"
 		end
 
 		if isfile and isfile(ThonnyHubFolder.."/Key System".."/"..Settings.KeySettings.FileName..ConfigurationExtension) then
-			-- for _, MKey in ipairs(Settings.KeySettings.Key) do
-				
-			-- end
+			
 			local data = game:HttpGet('https://thonny.pythonanywhere.com/?key='..Settings.KeySettings.FileName..ConfigurationExtension)
 			
 			if data == "True" then
@@ -1374,6 +1371,12 @@ function ThonnyHubLibrary:CreateWindow(Settings)
 			else:
 				print(data)
 			end
+
+			-- for _, MKey in ipairs(Settings.KeySettings.Key) do
+			-- 	if string.find(readfile(ThonnyHubFolder.."/Key System".."/"..Settings.KeySettings.FileName..ConfigurationExtension), MKey) then
+			-- 		Passthrough = true
+			-- 	end
+			-- end
 		end
 
 		if not Passthrough then
@@ -1450,14 +1453,29 @@ function ThonnyHubLibrary:CreateWindow(Settings)
 				if #KeyUI.Main.Input.InputBox.Text == 0 then return end
 				local KeyFound = false
 				local FoundKey = ''
-				local data = game:HttpGet('https://thonny.pythonanywhere.com/?key='..KeyMain.Input.InputBox.Text)
 
+				local data = game:HttpGet('https://thonny.pythonanywhere.com/?key='..Settings.KeySettings.FileName..ConfigurationExtension)
+				
 				if data == "True" then
 					KeyFound = true
 					FoundKey = KeyMain.Input.InputBox.Text
 				else:
 					print(data)
 				end
+
+				-- for _, MKey in ipairs(Settings.KeySettings.Key) do
+				-- 	--if string.find(KeyMain.Input.InputBox.Text, MKey) then
+				-- 	--	KeyFound = true
+				-- 	--	FoundKey = MKey
+				-- 	--end
+
+
+				-- 	-- stricter key check
+				-- 	if KeyMain.Input.InputBox.Text == MKey then
+				-- 		KeyFound = true
+				-- 		FoundKey = MKey
+				-- 	end
+				-- end
 				if KeyFound then 
 					TweenService:Create(KeyMain, TweenInfo.new(0.6, Enum.EasingStyle.Exponential), {BackgroundTransparency = 1}):Play()
 					TweenService:Create(KeyMain, TweenInfo.new(0.6, Enum.EasingStyle.Exponential), {Size = UDim2.new(0, 467, 0, 175)}):Play()
