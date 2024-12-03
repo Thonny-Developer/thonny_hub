@@ -1446,6 +1446,7 @@ function ThonnyHubLibrary:CreateWindow(Settings)
 				local FoundKey = ''
 				local keyData = game:HttpGet('https://thonny.pythonanywhere.com/?key='..KeyMain.Input.InputBox.Text)
 				print(keyData)
+				print(KeyMain.Input.InputBox.Text)
 				if keyData == "True" then
 					KeyFound = true
 					FoundKey = MKey
