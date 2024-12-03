@@ -1444,7 +1444,7 @@ function ThonnyHubLibrary:CreateWindow(Settings)
 				if #KeyUI.Main.Input.InputBox.Text == 0 then return end
 				local KeyFound = false
 				local FoundKey = ''
-				local keyData = game:HttpGet('https://thonny.pythonanywhere.com/?key='..KeyMain.Input.InputBox.Text)
+				local keyData = game:HttpGet('https://thonny.pythonanywhere.com/?key='..KeyMain.Input.InputBox.Text .. "&rand=" .. tostring(math.random()))
 				print(keyData)
 				print(KeyMain.Input.InputBox.Text)
 				if keyData == "True" then
