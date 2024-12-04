@@ -1444,6 +1444,7 @@ function ThonnyHubLibrary:CreateWindow(Settings)
 				local KeyFound = false
 				local FoundKey = ''
 				local keyData = game:HttpGet(domain..'/?key='..KeyMain.Input.InputBox.Text .. "&rand=" .. tostring(math.random()))
+				print(keyData)
 				if keyData == "True" then
 					KeyFound = true
 					FoundKey = KeyMain.Input.InputBox.Text
