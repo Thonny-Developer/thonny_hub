@@ -12,6 +12,7 @@ local ThonnyHubFolder = "ThonnyHub"
 local ConfigurationFolder = ThonnyHubFolder.."/Configurations"
 local ConfigurationExtension = ".rfld"
 
+local FileName = "THubKey"
 
 local ThonnyHubLibrary = {
 	Flags = {},
@@ -454,7 +455,7 @@ if not useStudio then
 		end
 	end
 end
-
+Title
 
 local minSize = Vector2.new(1024, 768)
 local useMobileSizing
@@ -1212,8 +1213,8 @@ function ThonnyHubLibrary:CreateWindow(Settings)
 	LoadingFrame.Subtitle.TextTransparency = 1
 
 	LoadingFrame.Version.TextTransparency = 1
-	LoadingFrame.Title.Text = Settings.LoadingTitle or "Loading Thonny Hub"
-	LoadingFrame.Subtitle.Text = Settings.LoadingSubtitle or "Interface package"
+	LoadingFrame.Title.Text = "Loading Thonny Hub"
+	LoadingFrame.Subtitle.Text = "by: thonny_dev"
 	LoadingFrame.Version.Text = Release
 
 	if Settings.Icon and Settings.Icon ~= 0 and Topbar:FindFirstChild('Icon') then
@@ -1334,37 +1335,24 @@ function ThonnyHubLibrary:CreateWindow(Settings)
 	end
 
 	if (Settings.KeySystem) then
-		if not Settings.KeySettings then
-			Passthrough = true
-			return
-		end
 
 		if isfolder and not isfolder(ThonnyHubFolder.."/Key System") then
 			makefolder(ThonnyHubFolder.."/Key System")
 		end
 
-		-- if Settings.KeySettings.GrabKeyFromSite then
-		-- 	for i, Key in ipairs(Settings.KeySettings.Key) do
-		-- 		local Success, Response = pcall(function()
-		-- 			Settings.KeySettings.Key[i] = tostring(game:HttpGet(Key):gsub("[\n\r]", " "))
-		-- 			Settings.KeySettings.Key[i] = string.gsub(Settings.KeySettings.Key[i], " ", "")
-		-- 		end)
-		-- 		if not Success then
-					
-		-- 			print("ThonnyHub | "..Key.." Error " ..tostring(Response))
-					 
-		-- 		end
-		-- 	end
-		-- end
-
-		if not Settings.KeySettings.FileName then
-			Settings.KeySettings.FileName = "THubKey"
+		if not FileName then
+			FileName = "THubKeyv1_2"
 		end
 
-		if isfile and isfile(ThonnyHubFolder.."/Key System".."/"..Settings.KeySettings.FileName..ConfigurationExtension) then
-			local savedKey = ThonnyHubFolder.."/Key System".."/"..Settings.KeySettings.FileName..ConfigurationExtension
+		if isfile and isfile(ThonnyHubFolder.."/Key System".."/"..FileName..ConfigurationExtension) then
+			
+			local savedKey = ThonnyHubFolder.."/Key System".."/"..FileName..ConfigurationExtension
 			local keyData = game:HttpGet(domain..'/?key='..savedKey .. "&rand=" .. tostring(math.random()))
+
 			print(keyData)
+			
+			print(ThonnyHubFolder.."/Key System".."/"..FileName..ConfigurationExtension)
+
 			if keyData == "True" then
 				Passthrough = true
 			end
@@ -1405,9 +1393,9 @@ function ThonnyHubLibrary:CreateWindow(Settings)
 			end
 
 			local KeyMain = KeyUI.Main
-			KeyMain.Title.Text = Settings.KeySettings.Title or Settings.Name
-			KeyMain.Subtitle.Text = Settings.KeySettings.Subtitle or "Key System"
-			KeyMain.NoteMessage.Text = Settings.KeySettings.Note or "No instructions"
+			KeyMain.Title.Text = "Enter your Thonny Hub key" or Settings.Name
+			KeyMain.Subtitle.Text = "You can get the key in our discord server"
+			KeyMain.NoteMessage.Text = "Keys will be valid until the end of testing."
 
 			KeyMain.Size = UDim2.new(0, 467, 0, 175)
 			KeyMain.BackgroundTransparency = 1
@@ -1445,25 +1433,12 @@ function ThonnyHubLibrary:CreateWindow(Settings)
 				local KeyFound = false
 				local FoundKey = ''
 				local keyData = game:HttpGet(domain..'/?key='..KeyMain.Input.InputBox.Text .. "&rand=" .. tostring(math.random()))
-				print(keyData)
+				
 				if keyData == "True" then
 					KeyFound = true
 					FoundKey = KeyMain.Input.InputBox.Text
 				end
 
-				-- for _, MKey in ipairs(Settings.KeySettings.Key) do
-				-- 	--if string.find(KeyMain.Input.InputBox.Text, MKey) then
-				-- 	--	KeyFound = true
-				-- 	--	FoundKey = MKey
-				-- 	--end
-
-
-				-- 	-- stricter key check
-				-- 	if KeyMain.Input.InputBox.Text == MKey then
-				-- 		KeyFound = true
-				-- 		FoundKey = MKey
-				-- 	end
-				-- end
 				if KeyFound then 
 					TweenService:Create(KeyMain, TweenInfo.new(0.6, Enum.EasingStyle.Exponential), {BackgroundTransparency = 1}):Play()
 					TweenService:Create(KeyMain, TweenInfo.new(0.6, Enum.EasingStyle.Exponential), {Size = UDim2.new(0, 467, 0, 175)}):Play()
@@ -1480,11 +1455,9 @@ function ThonnyHubLibrary:CreateWindow(Settings)
 					task.wait(0.51)
 					Passthrough = true
 					KeyMain.Visible = false
-					if Settings.KeySettings.SaveKey then
-						if writefile then
-							writefile(ThonnyHubFolder.."/Key System".."/"..Settings.KeySettings.FileName..ConfigurationExtension, FoundKey)
-							ThonnyHubLibrary:Notify({Title = "Thonny Hub", Content = "The key for the script has been saved successfully..", Image = 3605522284})
-						end
+					if writefile then
+						writefile(ThonnyHubFolder.."/Key System".."/"..FileName..ConfigurationExtension, FoundKey)
+						ThonnyHubLibrary:Notify({Title = "Thonny Hub", Content = "The key for the script has been saved successfully..", Image = 3605522284})
 					end
 				else
 					if AttemptsRemaining == 0 then
