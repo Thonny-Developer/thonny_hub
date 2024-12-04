@@ -1364,6 +1364,7 @@ function ThonnyHubLibrary:CreateWindow(Settings)
 		if isfile and isfile(ThonnyHubFolder.."/Key System".."/"..Settings.KeySettings.FileName..ConfigurationExtension) then
 			local savedKey = ThonnyHubFolder.."/Key System".."/"..Settings.KeySettings.FileName..ConfigurationExtension
 			local keyData = game:HttpGet(domain..'/?key='..savedKey .. "&rand=" .. tostring(math.random()))
+			print(keyData)
 			if keyData == "True" then
 				Passthrough = true
 			end
